@@ -4,6 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const util = require('./lib/function');
 const doRender = require('./lib/render');
+const ncp = require('ncp');
+const childProcess = require('child_process');
+
+const ncpOpts = {
+    filter: filepath => path.basename(filepath).indexOf('.') !== 0,
+};
 
 const printHelp = () => {
     console.error('Usage: pagee operation [config_file]');
@@ -26,20 +32,30 @@ if (typeof process.argv[2] === 'undefined') {
 
 switch (process.argv[2]) {
 case 'init': {
-    let configFileName = 'config.json';
-    if (fs.existsSync('config.json')) {
-        let d = 0;
-        while (fs.existsSync(`config.${d}.json`)) {
-            d += 1;
-        }
-        configFileName = `config.${d}.json`;
+    if (fs.readdirSync(process.cwd()).length != 0) {
+        util.printLog('error', 'Current working directory not empty, abort.');
+        process.exit(1);
+    } else {
+        util.printLog('info', 'Initializing new working directory...');
+        ncp(path.resolve(__dirname, 'sample/'), process.cwd(), ncpOpts, (err) => {
+            if (err) {
+                util.printLog('error', err);
+                process.exit(1);
+            }
+            const child = childProcess.spawn('git', [
+                'clone',
+                'https://git.reallserver.cn/tcdw/pagee-template-default',
+                path.resolve(process.cwd(), 'template/default'),
+            ], {
+                stdio: 'inherit',
+            });
+            child.on('exit', () => {
+                util.printLog('info', 'Done!');
+                util.printLog('info', `Template config files copied to \x1b[33m${process.cwd()}`);
+                process.exit(0);
+            });
+        });
     }
-    fs.copyFileSync(
-        path.resolve(__dirname, 'config.example.json'),
-        path.resolve(process.cwd(), configFileName),
-    );
-    util.printLog('info', `Template config file copied to \x1b[33m${path.resolve(process.cwd(), configFileName)}`);
-    process.exit(0);
     break;
 }
 case 'render': {
