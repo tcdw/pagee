@@ -1,0 +1,32 @@
+{
+  "name": "pagee",
+  "version": "1.0.0",
+  "description": "mass markdown renderer",
+  "main": "index.js",
+  "bin": {
+    "pagee": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.reallserver.cn:tcdw/pagee.git"
+  },
+  "author": "tcdw <admin@tcdw.net>",
+  "license": "BSD-3-Clause",
+  "preferGlobal": true,
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.0.11",
+    "highlight.js": "^9.12.0",
+    "markdown-it": "^8.4.0",
+    "md5-file": "^3.2.3",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0"
+  }
+}

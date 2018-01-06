@@ -1,0 +1,13 @@
+{
+    "path": ".",
+    "template": "default",
+    "title": "pagee Website",
+    "description": "Yet another website",
+    "pathPrefix": "/",
+    "nav": [
+        {
+            "name": "Home",
+            "url": "/"
+        }
+    ]
+}
