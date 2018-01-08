@@ -19,20 +19,13 @@ const printHelp = () => {
     process.exit(1);
 };
 
-if (typeof fs.copyFileSync === 'undefined') {
-    fs.copyFileSync = (from, to) => {
-        fs.createReadStream(from).pipe(fs.createWriteStream(to));
-        return to;
-    };
-}
-
 if (typeof process.argv[2] === 'undefined') {
     printHelp();
 }
 
 switch (process.argv[2]) {
 case 'init': {
-    if (fs.readdirSync(process.cwd()).length != 0) {
+    if (fs.readdirSync(process.cwd()).length !== 0) {
         util.printLog('error', 'Current working directory not empty, abort.');
         process.exit(1);
     } else {
